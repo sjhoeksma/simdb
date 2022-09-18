@@ -5,7 +5,7 @@ I sometimes write programs for RaspberryPi using nodejs and use a json file as a
 
 Keep in mind this library can be used in less data intensive applications. I normally use these kind of json data to store execution rules for sensors, etc.
 
-**Go Doc** https://godoc.org/github.com/sonyarouje/simdb
+**Go Doc** https://godoc.org/github.com/sjhoeksma/simdb
 
 **What it does?**
 This library enables to store, retrieve, update and delete data from the json db.
@@ -16,7 +16,7 @@ Let's have a look at, how to store some data and manipulate them using simd.
 ```GO
 package main
 
-import db "github.com/sonyarouje/simdb"
+import db "github.com/sjhoeksma/simdb"
 
 type Customer struct {
 	CustID string `json:"custid"`
