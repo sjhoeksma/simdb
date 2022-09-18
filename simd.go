@@ -72,17 +72,17 @@ func New(dir string) (*Driver, error) {
 }
 
 //Return the path of driver
-func (d *Driver)Path() (string) {
-  return d.dir
+func (d *Driver) Path() string {
+	return d.dir
 }
 
 //Lock the database and close
-func (d *Driver)Close() {
-  defer d.mutex.Unlock()
-  if (d.isOpened) {
-      d.mutex.Lock()
-  }
-  d.isOpened = false
+func (d *Driver) Close() {
+	defer d.mutex.Unlock()
+	if d.isOpened {
+		d.mutex.Lock()
+	}
+	d.isOpened = false
 }
 
 //Open will open the json db based on the entity passed.
@@ -93,9 +93,6 @@ func (d *Driver) Open(entity Entity) *Driver {
 	d.queries = nil
 	d.entityDealingWith = entity
 	db, err := d.openDB(entity)
-	if (d.isOpened) {
-		d.mutex.UnLock()
-	}
 	d.originalJSON = db
 	d.jsonContent = d.originalJSON
 	d.isOpened = true
