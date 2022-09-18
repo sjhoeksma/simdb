@@ -304,7 +304,7 @@ func (d *Driver) Delete(entity Entity) (err error) {
 	field, entityID := entity.ID()
 	entName, _ := d.getEntityName()
 	couldDelete := false
-	newRecordArray := make([]interface{}, 0, 0)
+	newRecordArray := make([]interface{}, 0)
 
 	d.mutex.Lock()
 	defer d.mutex.Unlock()

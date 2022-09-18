@@ -153,9 +153,9 @@ func TestUpsert(t *testing.T) {
 }
 
 func getCustomer(c Customer) (Customer, error) {
-	driver, err := New("test")
+	driver, _ := New("test")
 	var fetchedCustomer Customer
-	err = driver.Open(Customer{}).Where("custid", "=", c.CustID).First().AsEntity(&fetchedCustomer)
+	err := driver.Open(Customer{}).Where("custid", "=", c.CustID).First().AsEntity(&fetchedCustomer)
 	return fetchedCustomer, err
 }
 
@@ -191,9 +191,9 @@ func TestInsertProduct(t *testing.T) {
 }
 
 func getProduct(p Product) (Product, error) {
-	driver, err := New("test")
+	driver, _ := New("test")
 	var fetchedProduct Product
-	err = driver.Open(Product{}).Where("productId", "=", p.ProdID).First().AsEntity(&fetchedProduct)
+	err := driver.Open(Product{}).Where("productId", "=", p.ProdID).First().AsEntity(&fetchedProduct)
 	return fetchedProduct, err
 }
 
