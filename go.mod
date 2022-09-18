@@ -1,3 +1,3 @@
-module github.com/sonyarouje/simdb
+module github.com/sjhoeksma/simdb
 
 go 1.16
