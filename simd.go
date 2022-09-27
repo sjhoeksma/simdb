@@ -32,7 +32,7 @@ var ErrUpdateFailed = errors.New("update failed, no record(s) to update")
 //		return
 //	}
 type Entity interface {
-	ID() (jsonField string, value interface{})
+	_ID() (jsonField string, value interface{})
 }
 
 // empty represents an empty result
@@ -245,7 +245,7 @@ func (d *Driver) AsEntity(output interface{}) (err error) {
 func (d *Driver) Update(entity Entity) (err error) {
 	d.queries = nil
 	d.entityDealingWith = entity
-	field, entityID := entity.ID()
+	field, entityID := entity._ID()
 	couldUpdate := false
 	// entName, _ := d.getEntityName()
 
@@ -301,7 +301,7 @@ func (d *Driver) Upsert(entity Entity) (err error) {
 func (d *Driver) Delete(entity Entity) (err error) {
 	d.queries = nil
 	d.entityDealingWith = entity
-	field, entityID := entity.ID()
+	field, entityID := entity._ID()
 	entName, _ := d.getEntityName()
 	couldDelete := false
 	newRecordArray := make([]interface{}, 0)
