@@ -17,7 +17,7 @@ type Contact struct {
 	Email string `json:"email"`
 }
 
-func (c Customer) ID_() (jsonField string, value interface{}) {
+func (c Customer) ID() (jsonField string, value interface{}) {
 	value = c.CustID
 	jsonField = "custid"
 	return
@@ -29,7 +29,7 @@ type Product struct {
 	Price  float32 `json:"price"`
 }
 
-func (p Product) ID_() (jsonField string, value interface{}) {
+func (p Product) ID() (jsonField string, value interface{}) {
 	value = p.ProdID
 	jsonField = "productId"
 	return

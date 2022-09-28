@@ -26,13 +26,13 @@ var ErrUpdateFailed = errors.New("update failed, no record(s) to update")
 //		Phone string `json:"phone"`
 //		Email string `json:"email"`
 //	}
-//	func (c Customer) ID() (jsonField string, value interface{}) {
+//	func (c Customer) ID_() (jsonField string, value interface{}) {
 //		value=c.CustID
 //		jsonField="custid"
 //		return
 //	}
 type Entity interface {
-	ID_() (jsonField string, value interface{})
+	ID() (jsonField string, value interface{})
 }
 
 // empty represents an empty result
@@ -71,6 +71,16 @@ func New(dir string) (*Driver, error) {
 	return driver, err
 }
 
+//Clones a database driver.
+func Clone(d *Driver) *Driver {
+	driver := &Driver{
+		dir:      d.dir,
+		queryMap: d.queryMap,
+		mutex:    d.mutex,
+	}
+	return driver
+}
+
 //Return the path of driver
 func (d *Driver) Path() string {
 	return d.dir
@@ -90,16 +100,18 @@ func (d *Driver) Close() {
 //   driver.Open(Customer{})
 //Open returns a pointer to Driver, so you can chain methods like Where(), Get(), etc
 func (d *Driver) Open(entity Entity) *Driver {
-	d.queries = nil
-	d.entityDealingWith = entity
-	db, err := d.openDB(entity)
-	d.originalJSON = db
-	d.jsonContent = d.originalJSON
-	d.isOpened = true
+	//Search the driver in driverList
+	ad := Clone(d)
+	ad.queries = nil
+	ad.entityDealingWith = entity
+	db, err := ad.openDB(entity)
+	ad.originalJSON = db
+	ad.jsonContent = d.originalJSON
+	ad.isOpened = true
 	if err != nil {
-		d.addError(err)
+		ad.addError(err)
 	}
-	return d
+	return ad
 }
 
 //Errors will return errors encountered while performing any operations
@@ -245,7 +257,7 @@ func (d *Driver) AsEntity(output interface{}) (err error) {
 func (d *Driver) Update(entity Entity) (err error) {
 	d.queries = nil
 	d.entityDealingWith = entity
-	field, entityID := entity.ID_()
+	field, entityID := entity.ID()
 	couldUpdate := false
 	// entName, _ := d.getEntityName()
 
@@ -301,7 +313,7 @@ func (d *Driver) Upsert(entity Entity) (err error) {
 func (d *Driver) Delete(entity Entity) (err error) {
 	d.queries = nil
 	d.entityDealingWith = entity
-	field, entityID := entity.ID_()
+	field, entityID := entity.ID()
 	entName, _ := d.getEntityName()
 	couldDelete := false
 	newRecordArray := make([]interface{}, 0)
